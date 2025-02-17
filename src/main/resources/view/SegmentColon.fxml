@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<?import javafx.scene.shape.Ellipse?>
+<fx:root type="AnchorPane" xmlns="http://javafx.com/javafx"
+         xmlns:fx="http://javafx.com/fxml" prefWidth="10" prefHeight="100">
+    <children>
+        <Ellipse fx:id="dotTop" layoutX="5" layoutY="20" radiusX="4" radiusY="4" fill="dimgray"/>
+        <Ellipse fx:id="dotBottom" layoutX="5" layoutY="60" radiusX="4" radiusY="4" fill="dimgray"/>
+    </children>
+</fx:root>
+

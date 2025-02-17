@@ -2,18 +2,20 @@ package io.simulation.screens;
 
 import io.simulation.MainController;
 import io.simulation.model.MainModel;
+import io.simulation.controller.AlarmclockViewController;
+import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
-import javafx.scene.control.Button;
-import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
+import java.io.IOException;
 
 public class ScreenAlarmclock implements Screen {
 
     private Pane root;
     private MainModel mainModel;
     private MainController mainController;
+    private AlarmclockViewController alarmController; // Referenz zum Controller
 
     public ScreenAlarmclock(MainModel mainModel, MainController mainController) {
         this.mainModel = mainModel;
@@ -29,6 +31,20 @@ public class ScreenAlarmclock implements Screen {
 
         grid.add(new Label("Alarmclock"), 0, 0);
 
+        try {
+            // Lade die Alarmclock-View-FXML
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/AlarmclockView.fxml"));
+            Pane alarmclockView = loader.load();
+
+            // Speichere den Controller
+            alarmController = loader.getController();
+
+            grid.add(alarmclockView, 0, 1);
+        } catch (IOException e) {
+            e.printStackTrace();
+            grid.add(new Label("Fehler beim Laden der Alarmclock View"), 0, 1);
+        }
+
         this.root = grid;
     }
 
@@ -37,18 +53,15 @@ public class ScreenAlarmclock implements Screen {
         return root;
     }
 
-
     @Override
     public void handleIncomingData(String line) {
-        // z.B. "d2abc1234",
-        // => Ab positions[2..] parsen wir "abc1234"
-        // => interpretieren => UI updaten
+        // Beispiel: "d2abc1234" – ab Position 2 wird der Hex-String extrahiert
         String payload = line.substring(2);
-        // deine Logik ...
-        System.out.println("ScreenAc: habe Daten nur für mich: " + payload);
+        System.out.println("ScreenAlarmclock: habe Daten nur für mich: " + payload);
 
-        // Dann evtl. UI aktualisieren:
-        // z.B. parse 2 floats -> position, angle,
-        // => update graphics
+        // Übergebe den Hex-String an den Controller, damit die Anzeige aktualisiert wird
+        if (alarmController != null) {
+            alarmController.setHexString(payload);
+        }
     }
 }

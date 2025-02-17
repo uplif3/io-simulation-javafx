@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import io.simulation.view.segment.SegmentDigit?>
+<?import io.simulation.view.segment.SegmentColon?>
+
+<VBox xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml"
+      fx:controller="io.simulation.controller.AlarmclockViewController"
+      alignment="CENTER" spacing="10">
+    <Label text="Alarm Clock" style="-fx-font-size: 24px; -fx-font-weight: bold;"/>
+    <HBox alignment="CENTER" spacing="10">
+        <SegmentDigit fx:id="hoursTens" />
+        <SegmentDigit fx:id="hoursOnes" />
+        <SegmentColon fx:id="colon" />
+        <SegmentDigit fx:id="minutesTens" />
+        <SegmentDigit fx:id="minutesOnes" />
+    </HBox>
+    <HBox alignment="CENTER" spacing="20">
+        <Label fx:id="alarmLabel" text="ALARM" style="-fx-text-fill: red; -fx-font-weight: bold;"/>
+        <Label fx:id="beepLabel" text="BEEP" style="-fx-text-fill: orange; -fx-font-weight: bold;"/>
+    </HBox>
+</VBox>

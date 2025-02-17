@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<?import javafx.scene.shape.Rectangle?>
+<fx:root type="AnchorPane" xmlns="http://javafx.com/javafx"
+         xmlns:fx="http://javafx.com/fxml" prefWidth="60" prefHeight="100">
+    <children>
+        <!-- A (oben) -->
+        <Rectangle fx:id="segA" layoutX="5" layoutY="0" width="50" height="8" fill="dimgray"/>
+        <!-- B (oben rechts) -->
+        <Rectangle fx:id="segB" layoutX="55" layoutY="8" width="8" height="40" fill="dimgray"/>
+        <!-- C (unten rechts) -->
+        <Rectangle fx:id="segC" layoutX="55" layoutY="52" width="8" height="40" fill="dimgray"/>
+        <!-- D (unten) -->
+        <Rectangle fx:id="segD" layoutX="5" layoutY="92" width="50" height="8" fill="dimgray"/>
+        <!-- E (unten links) -->
+        <Rectangle fx:id="segE" layoutX="0" layoutY="52" width="8" height="40" fill="dimgray"/>
+        <!-- F (oben links) -->
+        <Rectangle fx:id="segF" layoutX="0" layoutY="8" width="8" height="40" fill="dimgray"/>
+        <!-- G (Mitte) -->
+        <Rectangle fx:id="segG" layoutX="5" layoutY="46" width="50" height="8" fill="dimgray"/>
+    </children>
+</fx:root>
+
