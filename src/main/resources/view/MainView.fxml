@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<BorderPane xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="io.simulation.MainController">
+
+    <!-- Obere Toolbar mit Dropdown für COM-Ports und Buttons -->
+    <top>
+        <HBox spacing="10">
+            <Label text="Serial Port:" />
+            <ComboBox fx:id="serialPortComboBox"/>
+            <Button fx:id="connectButton" text="Connect" onAction="#handleConnect"/>
+            <Button fx:id="disconnectButton" text="Disconnect" onAction="#handleDisconnect" disable="true"/>
+        </HBox>
+    </top>
+
+    <!-- Hauptbereich mit SplitPane horizontal -->
+    <center>
+        <SplitPane fx:id="horizontalSplitPane" dividerPositions="0.5">
+            <!-- Linker Teil: SplitPane vertikal -->
+            <SplitPane fx:id="leftSplitPane" orientation="VERTICAL" dividerPositions="0.5">
+                <!-- 1) Oberer Container für dynamischen Screen -->
+                <AnchorPane fx:id="dynamicScreenContainer" />
+                <!-- 2) Unterer Container für IO-Ansicht -->
+                <AnchorPane fx:id="ioViewContainer" />
+            </SplitPane>
+
+            <!-- Rechter Teil: SplitPane vertikal -->
+            <SplitPane fx:id="rightSplitPane" orientation="VERTICAL" dividerPositions="0.5">
+                <!-- 1) Log-Bereich -->
+                <AnchorPane fx:id="logContainer" />
+                <!-- 2) Debug-Bereich -->
+                <AnchorPane fx:id="debugContainer" />
+            </SplitPane>
+        </SplitPane>
+    </center>
+
+</BorderPane>
