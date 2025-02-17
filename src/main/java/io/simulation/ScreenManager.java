@@ -51,19 +51,17 @@ public class ScreenManager {
      * Du kannst diese Methode nutzen, um z.B. Screens dynamisch in der MainView anzuzeigen.
      */
     public void showScreen(String screenId, AnchorPane container) {
+        // Falls der dynamische Container (z. B. dynamicScreenContainer) genutzt wird und "0" angefordert wird:
+        if (container == mainController.getDynamicScreenContainer() && screenId.equals("0")) {
+            mainController.unloadDynamicScreen();
+            return;
+        }
         Screen screen = screens.get(screenId);
         if (screen == null) {
             System.err.println("ScreenManager: Unbekannte screenId '" + screenId + "'");
             return;
         }
-
         Pane view = screen.getView();
         container.getChildren().setAll(view);
-
-        // Damit der Screen das ganze AnchorPane ausfüllt:
-        AnchorPane.setTopAnchor(view, 0.0);
-        AnchorPane.setLeftAnchor(view, 0.0);
-        AnchorPane.setRightAnchor(view, 0.0);
-        AnchorPane.setBottomAnchor(view, 0.0);
     }
 }

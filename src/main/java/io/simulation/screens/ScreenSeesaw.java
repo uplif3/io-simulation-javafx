@@ -27,31 +27,7 @@ public class ScreenSeesaw implements Screen {
         grid.setHgap(10);
         grid.setVgap(10);
 
-        // Beispiel: 8 LEDs, 8 Switches, 4 Buttons
-        Label lblLED = new Label("LEDs:");
-        grid.add(lblLED, 0, 0);
-
-        for(int i=0; i<8; i++){
-            CheckBox chk = new CheckBox("LED " + i);
-            // chk.setSelected(...) => Ansteuerung könnte an ein Model gebunden werden
-            grid.add(chk, i+1, 0);
-        }
-
-        Label lblSwitch = new Label("Switches:");
-        grid.add(lblSwitch, 0, 1);
-        for(int i=0; i<8; i++){
-            CheckBox sw = new CheckBox("SW " + i);
-            // EventHandler => sendet was an mainController etc.
-            grid.add(sw, i+1, 1);
-        }
-
-        Label lblButtons = new Label("Buttons:");
-        grid.add(lblButtons, 0, 2);
-        for(int i=0; i<4; i++){
-            Button btn = new Button("BTN " + i);
-            // btn.setOnAction(e -> ...)
-            grid.add(btn, i+1, 2);
-        }
+        grid.add(new Label("Seesaw"), 0, 0);
 
         this.root = grid;
     }

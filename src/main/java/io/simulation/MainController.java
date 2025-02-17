@@ -8,6 +8,7 @@ import io.simulation.screens.ScreenIO;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
+import javafx.scene.control.SplitPane;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
 
@@ -29,6 +30,8 @@ public class MainController {
     private AnchorPane logContainer;
     @FXML
     private AnchorPane debugContainer;
+    @FXML
+    private SplitPane leftSplitPane;
 
     private SerialService serialService;
     private MainModel mainModel;
@@ -57,6 +60,7 @@ public class MainController {
         screenManager.showScreen("L", logContainer);
         screenManager.showScreen("D", debugContainer);
 
+        leftSplitPane.getItems().remove(dynamicScreenContainer);
     }
 
     @FXML
@@ -88,9 +92,37 @@ public class MainController {
         }
     }
 
-    // Methode, um dynamisch Screens zu wechseln
+
+
+    // Wird z. B. von ScreenManager genutzt, um den dynamischen Bereich zu leeren
+    public void unloadDynamicScreen() {
+        dynamicScreenContainer.getChildren().clear();
+        leftSplitPane.getItems().remove(dynamicScreenContainer);
+    }
+
+
+    // Damit der ScreenManager den dynamischen Container erkennen kann
+    public AnchorPane getDynamicScreenContainer() {
+        return dynamicScreenContainer;
+    }
+
+    public void SerialWriteLine(String msg){
+        serialService.write(msg + "\n");
+    }
+
     public void loadDynamicScreen(String screenId) {
+        // Prüfen, ob dynamicScreenContainer schon im SplitPane ist
+        if (!leftSplitPane.getItems().contains(dynamicScreenContainer)) {
+            // Oberhalb (Index 0) einfügen, sodass dynamicScreenContainer über ioViewContainer liegt
+            leftSplitPane.getItems().add(0, dynamicScreenContainer);
+        }
+        // Anschließend den gewünschten Screen hineinladen
         screenManager.showScreen(screenId, dynamicScreenContainer);
+    }
+
+
+    public void SerialWrite(String msg){
+        serialService.write(msg);
     }
 
     private void parseAndDispatch(String line) {
@@ -113,8 +145,18 @@ public class MainController {
         switch (prefix) {
 
             case 'd': // "setter"
+                String data = line.substring(1);
                 // Nur an Screen 'screenId' weiterleiten
-                screenManager.handleSetterMessage(screenId, line);
+                if(data.startsWith("S")){
+                    if(data.substring(1).equals("0")){
+                        unloadDynamicScreen();
+                        break;
+                    }
+                    loadDynamicScreen(data.substring(1));
+                }
+                else {
+                    screenManager.handleSetterMessage(screenId, line);
+                }
                 break;
             case '?': // "request"
                 // ...
