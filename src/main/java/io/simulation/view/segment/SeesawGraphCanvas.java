@@ -1,4 +1,4 @@
-package io.simulation.screens;
+package io.simulation.view.segment;
 
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;

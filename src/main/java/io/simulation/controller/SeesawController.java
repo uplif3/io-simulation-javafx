@@ -1,8 +1,8 @@
 package io.simulation.controller;
 
 import io.simulation.model.SeesawModel;
-import io.simulation.screens.SeesawCanvas;
-import io.simulation.screens.SeesawGraphCanvas;
+import io.simulation.view.segment.SeesawCanvas;
+import io.simulation.view.segment.SeesawGraphCanvas;
 
 public class SeesawController {
     private SeesawModel model;

@@ -1,4 +1,4 @@
-package io.simulation.screens;
+package io.simulation.view.segment;
 
 import io.simulation.model.SeesawModel;
 import javafx.scene.canvas.Canvas;
