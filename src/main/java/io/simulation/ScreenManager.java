@@ -25,7 +25,7 @@ public class ScreenManager {
         screens.put("L", new ScreenLog());
         screens.put("D", new ScreenDebug());
         screens.put("1", new ScreenAlarmclock(mm, mc));
-        screens.put("2", new ScreenSeesaw(mm, mc));
+        screens.put("2", new ScreenSeesaw(mc));
         // usw. - weitere Screens möglich
     }
 

@@ -1,35 +1,40 @@
 package io.simulation.screens;
 
 import io.simulation.MainController;
-import io.simulation.model.MainModel;
+import io.simulation.controller.SeesawController;
+import io.simulation.model.SeesawModel;
+import io.simulation.screens.SeesawCanvas;
+import io.simulation.screens.SeesawGraphCanvas;
 import javafx.geometry.Insets;
-import javafx.scene.control.Button;
-import javafx.scene.control.CheckBox;
-import javafx.scene.control.Label;
-import javafx.scene.layout.GridPane;
+import javafx.scene.layout.VBox;
 import javafx.scene.layout.Pane;
 
 public class ScreenSeesaw implements Screen {
 
     private Pane root;
-    private MainModel mainModel;
     private MainController mainController;
+    // MVC-Komponenten:
+    private SeesawModel seesawModel;
+    private SeesawController seesawController;
+    private SeesawCanvas seesawCanvas;
+    private SeesawGraphCanvas graphCanvas;
 
-    public ScreenSeesaw(MainModel mainModel, MainController mainController) {
-        this.mainModel = mainModel;
+    public ScreenSeesaw(MainController mainController) {
         this.mainController = mainController;
+        // Model, Views und Controller initialisieren:
+        seesawModel = new SeesawModel();
+        seesawCanvas = new SeesawCanvas(600, 300);
+        graphCanvas = new SeesawGraphCanvas();
+        seesawController = new SeesawController(seesawModel, seesawCanvas, graphCanvas);
         createView();
     }
 
     private void createView() {
-        GridPane grid = new GridPane();
-        grid.setPadding(new Insets(10));
-        grid.setHgap(10);
-        grid.setVgap(10);
-
-        grid.add(new Label("Seesaw"), 0, 0);
-
-        this.root = grid;
+        // Beispielhaft: vertikale Anordnung der beiden Canvas
+        VBox pane = new VBox(10);
+        pane.setPadding(new Insets(10));
+        pane.getChildren().addAll(seesawCanvas, graphCanvas);
+        this.root = pane;
     }
 
     @Override
@@ -39,15 +44,7 @@ public class ScreenSeesaw implements Screen {
 
     @Override
     public void handleIncomingData(String line) {
-        // z.B. "d2abc1234",
-        // => Ab positions[2..] parsen wir "abc1234"
-        // => interpretieren => UI updaten
-        String payload = line.substring(2);
-        // deine Logik ...
-        System.out.println("ScreenSeesaw: habe Daten nur für mich: " + payload);
-
-        // Dann evtl. UI aktualisieren:
-        // z.B. parse 2 floats -> position, angle,
-        // => update graphics
+        System.out.println("ScreenSeesaw: empfangen: " + line);
+        seesawController.processPacket(line);
     }
 }

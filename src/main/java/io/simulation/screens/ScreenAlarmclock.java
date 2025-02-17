@@ -29,8 +29,6 @@ public class ScreenAlarmclock implements Screen {
         grid.setHgap(10);
         grid.setVgap(10);
 
-        grid.add(new Label("Alarmclock"), 0, 0);
-
         try {
             // Lade die Alarmclock-View-FXML
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/AlarmclockView.fxml"));
