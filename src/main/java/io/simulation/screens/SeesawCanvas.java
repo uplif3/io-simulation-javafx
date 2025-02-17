@@ -12,6 +12,10 @@ public class SeesawCanvas extends Canvas {
         super(width, height);
     }
 
+    public SeesawCanvas() {
+        super(600, 300);
+    }
+
     /**
      * Zeichnet die Wippe anhand der aktuellen Zustände aus dem Model.
      */

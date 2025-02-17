@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+
+<BorderPane xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml"
+            fx:controller="io.simulation.controller.LogViewController"
+            prefHeight="400.0" prefWidth="600.0">
+    <center>
+        <!-- TextArea für das Log -->
+        <TextArea fx:id="logTextArea" wrapText="true" />
+    </center>
+    <bottom>
+        <!-- HBox mit Buttons -->
+        <HBox spacing="10" alignment="CENTER_LEFT">
+            <children>
+                <Button fx:id="btnSync" text="Unsync" />
+                <Button fx:id="btnClear" text="Clear" />
+            </children>
+        </HBox>
+    </bottom>
+    <padding>
+        <Insets top="10" right="10" bottom="10" left="10"/>
+    </padding>
+</BorderPane>

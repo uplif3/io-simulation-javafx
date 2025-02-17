@@ -1,6 +1,6 @@
 package io.simulation.controller;
 
-import io.simulation.screens.AlarmclockViewModel;
+import io.simulation.model.AlarmclockModel;
 import io.simulation.view.segment.SegmentColon;
 import io.simulation.view.segment.SegmentDigit;
 import javafx.fxml.FXML;
@@ -8,43 +8,49 @@ import javafx.scene.control.Label;
 
 public class AlarmclockViewController {
 
-    @FXML
-    private SegmentDigit hoursTens;
-    @FXML
-    private SegmentDigit hoursOnes;
-    @FXML
-    private SegmentDigit minutesTens;
-    @FXML
-    private SegmentDigit minutesOnes;
-    @FXML
-    private SegmentColon colon;
-    @FXML
-    private Label alarmLabel;
-    @FXML
-    private Label beepLabel;
+    @FXML private SegmentDigit hoursTens;
+    @FXML private SegmentDigit hoursOnes;
+    @FXML private SegmentDigit minutesTens;
+    @FXML private SegmentDigit minutesOnes;
+    @FXML private SegmentColon colon;
+    @FXML private Label alarmLabel;
+    @FXML private Label beepLabel;
 
-    private final AlarmclockViewModel viewModel = new AlarmclockViewModel();
+    // Reines Model (kein ViewModel mehr)
+    private AlarmclockModel model = new AlarmclockModel();
 
     @FXML
     public void initialize() {
-        // Bindung der Siebensegmentanzeigen an die ViewModel-Properties
-        hoursTens.digitProperty().bind(viewModel.hoursTensProperty());
-        hoursOnes.digitProperty().bind(viewModel.hoursOnesProperty());
-        minutesTens.digitProperty().bind(viewModel.minutesTensProperty());
-        minutesOnes.digitProperty().bind(viewModel.minutesOnesProperty());
-        colon.isOnProperty().bind(viewModel.colonOnProperty());
-
-        // Sichtbarkeit der Alarm-/Beep-Labels an die ViewModel-BooleanProperties binden
-        alarmLabel.visibleProperty().bind(viewModel.alarmActiveProperty());
-        beepLabel.visibleProperty().bind(viewModel.beepActiveProperty());
+        // Beim Initialisieren wird die Ansicht gesetzt
+        updateView();
     }
 
-    // Methode, um vom Screen (oder einer anderen Quelle) den Hex-String zu übergeben:
+    // Wird vom MainController (z. B. via serielle Daten) aufgerufen:
     public void setHexString(String hex) {
-        viewModel.setHexString(hex);
+        model.setHexString(hex);
+        updateView();
     }
 
-    public AlarmclockViewModel getViewModel() {
-        return viewModel;
+    public void handleIncomingData(String data) {
+        setHexString(data);
+    }
+
+    /**
+     * Aktualisiert die UI anhand der Werte im Model.
+     * Es wird davon ausgegangen, dass SegmentDigit und SegmentColon über
+     * Methoden wie setDigit(String) bzw. setOn(boolean) verfügen.
+     */
+    private void updateView() {
+        hoursTens.setDigit(model.getHoursTens());
+        hoursOnes.setDigit(model.getHoursOnes());
+        minutesTens.setDigit(model.getMinutesTens());
+        minutesOnes.setDigit(model.getMinutesOnes());
+        colon.setOn(model.isColonOn());
+        alarmLabel.setVisible(model.isAlarmActive());
+        beepLabel.setVisible(model.isBeepActive());
+    }
+
+    public void setMainController(MainController mainController) {
+        // Optional: Referenz auf den MainController, falls benötigt
     }
 }

@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import io.simulation.screens.SeesawCanvas?>
+<?import io.simulation.screens.SeesawGraphCanvas?>
+<?import javafx.scene.layout.VBox?>
+<VBox xmlns="http://javafx.com/javafx"
+      xmlns:fx="http://javafx.com/fxml"
+      fx:controller="io.simulation.controller.SeesawViewController"
+      spacing="10">
+    <children>
+        <io.simulation.screens.SeesawCanvas fx:id="seesawCanvas" width="600" height="300" />
+        <io.simulation.screens.SeesawGraphCanvas fx:id="graphCanvas" width="600" height="150" />
+    </children>
+</VBox>

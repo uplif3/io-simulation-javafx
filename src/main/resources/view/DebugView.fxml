@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<BorderPane xmlns="http://javafx.com/javafx"
+            xmlns:fx="http://javafx.com/fxml"
+            fx:controller="io.simulation.controller.DebugViewController"
+            style="-fx-padding: 10;">
+
+    <!-- TextArea im Zentrum -->
+    <center>
+        <TextArea fx:id="debugTextArea" style="-fx-control-inner-background: lightyellow;" />
+    </center>
+
+    <!-- Unten eine HBox mit dem Clear-Button -->
+    <bottom>
+        <HBox spacing="10">
+            <Button fx:id="btnClear" text="Clear"/>
+        </HBox>
+    </bottom>
+</BorderPane>
