@@ -75,8 +75,20 @@ public class MainController {
         ioViewController = loadFXMLInto("/view/IOView.fxml", ioViewContainer);
         if (ioViewController != null) {
             ioViewController.setMainController(this);
+
+            // WICHTIG: Keybindings registrieren
+            if (ioViewContainer.getScene() != null) {
+                ioViewController.setupKeyBindings(ioViewContainer.getScene());
+            } else {
+                ioViewContainer.sceneProperty().addListener((obs, oldScene, newScene) -> {
+                    if (newScene != null) {
+                        ioViewController.setupKeyBindings(newScene);
+                    }
+                });
+            }
         }
     }
+
 
     public void showLogView() {
         logViewController = loadFXMLInto("/view/LogView.fxml", logContainer);

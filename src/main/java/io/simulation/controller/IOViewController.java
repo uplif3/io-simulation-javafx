@@ -3,10 +3,15 @@ package io.simulation.controller;
 import io.simulation.model.IOModel;
 import io.simulation.view.segment.LEDCanvas;
 import javafx.fxml.FXML;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.Slider;
+import javafx.scene.input.KeyCode;
 import javafx.scene.layout.HBox;
+
+import java.util.HashSet;
+import java.util.Set;
 
 public class IOViewController {
 
@@ -17,6 +22,7 @@ public class IOViewController {
     @FXML private Slider slider0, slider1;
 
     private final LEDCanvas[] ledArray = new LEDCanvas[8];
+    private final Set<KeyCode> pressedKeys = new HashSet<>();
 
     private IOModel ioModel;
     private MainController mainController;
@@ -79,6 +85,64 @@ public class IOViewController {
             ioModel.setScale1(newVal);
             sendScale1();
         });
+    }
+
+    /**
+     * Registriert Keybindings für die Buttons
+     */
+    public void setupKeyBindings(Scene scene) {
+        scene.setOnKeyPressed(event -> {
+            KeyCode code = event.getCode();
+
+            if (!pressedKeys.contains(code)) { // Verhindert Wiederholung
+                pressedKeys.add(code);
+                switch (code) {
+                    case DIGIT1 -> pressButton(3);
+                    case DIGIT2 -> pressButton(2);
+                    case DIGIT3 -> pressButton(1);
+                    case DIGIT4 -> pressButton(0);
+                }
+            }
+        });
+
+        scene.setOnKeyReleased(event -> {
+            KeyCode code = event.getCode();
+            if (pressedKeys.contains(code)) {
+                pressedKeys.remove(code);
+                switch (code) {
+                    case DIGIT1 -> releaseButton(3);
+                    case DIGIT2 -> releaseButton(2);
+                    case DIGIT3 -> releaseButton(1);
+                    case DIGIT4 -> releaseButton(0);
+                }
+            }
+        });
+    }
+
+    private void pressButton(int index) {
+        ioModel.setButton(index, true);
+        getButton(index).setStyle("-fx-background-color: lightblue;"); // Visuelle Bestätigung
+        if (mainController != null) {
+            mainController.SerialWriteLine("d02" + ioModel.getButtonsAsHex());
+        }
+    }
+
+    private void releaseButton(int index) {
+        ioModel.setButton(index, false);
+        getButton(index).setStyle(""); // Standard-Stil wiederherstellen
+        if (mainController != null) {
+            mainController.SerialWriteLine("d02" + ioModel.getButtonsAsHex());
+        }
+    }
+
+    private Button getButton(int index) {
+        return switch (index) {
+            case 0 -> button0;
+            case 1 -> button1;
+            case 2 -> button2;
+            case 3 -> button3;
+            default -> throw new IllegalArgumentException("Ungültiger Button-Index: " + index);
+        };
     }
 
     /**
