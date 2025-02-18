@@ -17,7 +17,6 @@ public class SeesawController {
 
     public void processPacket(String packet) {
         model.updateFromPacket(packet);
-        // Aktualisiere beide Views mit den aktuellen Modelwerten:
         seesawCanvas.redraw(model);
         graphCanvas.updateGraphData(model.getReference(), model.getBall(), model.getAngle());
     }

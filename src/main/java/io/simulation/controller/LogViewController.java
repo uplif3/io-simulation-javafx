@@ -17,10 +17,7 @@ public class LogViewController {
 
     @FXML
     public void initialize() {
-        // Setze die Aktion für den Clear-Button:
         btnClear.setOnAction(e -> logTextArea.clear());
-
-        // Setze die Aktion für den Sync-/Unsync-Button:
         btnSync.setOnAction(e -> toggleSync());
     }
 
@@ -51,6 +48,9 @@ public class LogViewController {
      * @param line die empfangene Zeile
      */
     public void handleIncomingData(String line) {
-        handleLog(line.substring(2));
+        logTextArea.appendText(line + "\n");
+        if (autoScroll) {
+            logTextArea.setScrollTop(Double.MAX_VALUE);
+        }
     }
 }

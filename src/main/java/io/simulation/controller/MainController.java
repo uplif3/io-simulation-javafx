@@ -25,25 +25,20 @@ public class MainController {
     @FXML private AnchorPane debugContainer;
     @FXML private SplitPane leftSplitPane;
 
-    // Services & Models
     private SerialService serialService;
     private MainModel mainModel;
 
-    // Referenzen auf die aktuell geladenen Screen-Controller
     private IOViewController ioViewController;
     private LogViewController logViewController;
     private DebugViewController debugViewController;
     private AlarmclockViewController alarmclockViewController;
     private SeesawViewController seesawViewController;
-    // ... weitere Screens bei Bedarf
 
     @FXML
     public void initialize() {
-        // Initialisierung des Models und des SerialService
         mainModel = new MainModel();
         serialService = new SerialService();
 
-        // Serielle Ports ermitteln und in die ComboBox füllen
         SerialPort[] ports = SerialPort.getCommPorts();
         for (SerialPort port : ports) {
             serialPortComboBox.getItems().add(port.getSystemPortName());
@@ -52,25 +47,14 @@ public class MainController {
             serialPortComboBox.getSelectionModel().selectFirst();
         }
 
-        // Zunächst wird der IO-Screen in den vorgesehenen Container geladen
         showIOView();
         showDebugView();
         showLogView();
-
-        // Optional: logContainer und debugContainer ebenfalls laden
-        // (Hier kannst du z. B. noch weitere Views laden, wenn gewünscht)
 
         // Der dynamische Container wird erst dann im SplitPane angezeigt, wenn er benötigt wird
         leftSplitPane.getItems().remove(dynamicScreenContainer);
     }
 
-    // ============================
-    // Methoden zum Laden von Screens (direkt per FXML)
-    // ============================
-
-    /**
-     * Lädt den IO-Screen in den ioViewContainer.
-     */
     public void showIOView() {
         ioViewController = loadFXMLInto("/view/IOView.fxml", ioViewContainer);
         if (ioViewController != null) {
@@ -98,9 +82,6 @@ public class MainController {
         debugViewController = loadFXMLInto("/view/DebugView.fxml", debugContainer);
     }
 
-    /**
-     * Lädt den Alarmclock-Screen in den dynamicScreenContainer.
-     */
     public void showAlarmclockView() {
         alarmclockViewController = loadFXMLInto("/view/AlarmclockView.fxml", dynamicScreenContainer);
         if (alarmclockViewController != null) {
@@ -109,9 +90,6 @@ public class MainController {
         }
     }
 
-    /**
-     * Lädt den Seesaw-Screen in den dynamicScreenContainer.
-     */
     public void showSeesawView() {
         seesawViewController = loadFXMLInto("/view/SeesawView.fxml", dynamicScreenContainer);
         if (seesawViewController != null) {
@@ -120,10 +98,6 @@ public class MainController {
         }
     }
 
-    /**
-     * Hilfsmethode, um den dynamicScreenContainer in den leftSplitPane einzufügen,
-     * falls er noch nicht vorhanden ist.
-     */
     private void addDynamicContainerIfMissing() {
         if (!leftSplitPane.getItems().contains(dynamicScreenContainer)) {
             leftSplitPane.getItems().add(0, dynamicScreenContainer);
@@ -160,10 +134,6 @@ public class MainController {
         leftSplitPane.getItems().remove(dynamicScreenContainer);
     }
 
-    // ============================
-    // Serielle Verbindung
-    // ============================
-
     @FXML
     public void handleConnect() {
         String selectedPort = serialPortComboBox.getValue();
@@ -175,7 +145,6 @@ public class MainController {
                 disconnectButton.setDisable(false);
                 serialPortComboBox.setDisable(true);
 
-                // Starte das Lesen des seriellen Ports und leite die Nachrichten an parseAndDispatch weiter
                 serialService.startReading(this::parseAndDispatch);
             } else {
                 System.out.println("Fehler beim Verbinden mit " + selectedPort);
@@ -193,10 +162,6 @@ public class MainController {
             serialPortComboBox.setDisable(false);
         }
     }
-
-    // ============================
-    // Dynamisches Umschalten & Dispatch
-    // ============================
 
     /**
      * Diese Methode verarbeitet eingehende Nachrichten und leitet sie
@@ -225,18 +190,16 @@ public class MainController {
             case 'd': // Setter
                 String data = line.substring(1);
                 if (data.startsWith("S")) {
-                    // Dynamischer Screen-Befehl: S0 = dynamic screen unload, Sx = laden
                     if (data.substring(1).equals("0")) {
                         unloadDynamicScreen();
                         break;
                     }
                     loadDynamicScreen(data.substring(1));
                 } else {
-                    // Dispatch an statische Screens anhand der Screen-ID
                     switch (screenId) {
                         case "0":
                             if (ioViewController != null) {
-                                ioViewController.handleIncomingData(line);
+                                ioViewController.handleIncomingData(line.substring(2));
                             }
                             break;
                         case "1":
@@ -246,17 +209,17 @@ public class MainController {
                             break;
                         case "2":
                             if (seesawViewController != null) {
-                                seesawViewController.handleIncomingData(line);
+                                seesawViewController.handleIncomingData(line.substring(2));
                             }
                             break;
                         case "D":
                             if (debugViewController != null) {
-                                debugViewController.handleIncomingData(line);
+                                debugViewController.handleIncomingData(line.substring(2));
                             }
                             break;
                         case "L":
                             if (logViewController != null) {
-                                logViewController.handleIncomingData(line);
+                                logViewController.handleIncomingData(line.substring(2));
                             }
                             break;
                         default:
@@ -265,10 +228,29 @@ public class MainController {
                 }
                 break;
             case '?': // Request
-                // Hier kannst du die Logik für Anfragen einbauen
+                switch (line.substring(1)){
+                    case "01":
+                        ioViewController.sendSwitches();
+                        break;
+                    case "02":
+                        ioViewController.sendButtonState();
+                        break;
+                    case "0a":
+                        ioViewController.sendScale0();
+                        break;
+                    case "0b":
+                        ioViewController.sendScale1();
+                        break;
+                    case "T":
+                        SerialWriteLine("dT" + java.time.LocalDateTime.now().format(java.time.format.DateTimeFormatter.ofPattern("yyyyMMddHHmmss")));
+                        break;
+
+                }
+
                 break;
             default:
                 System.out.println("Unbekanntes Kommando: " + prefix + " / " + line);
+                debugViewController.handleIncomingData(line);
         }
     }
 
@@ -291,10 +273,6 @@ public class MainController {
                 System.out.println("Dynamischer Screen für ID " + screenId + " nicht definiert.");
         }
     }
-
-    // ============================
-    // Methoden für Aufrufe aus den Child-Controllern
-    // ============================
 
     /**
      * Wird von den Child-Controllern aufgerufen, um Nachrichten über den SerialPort zu senden.

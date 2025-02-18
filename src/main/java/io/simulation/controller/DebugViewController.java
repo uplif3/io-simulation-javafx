@@ -11,7 +11,6 @@ public class DebugViewController {
 
     @FXML
     public void initialize() {
-        // Clear-Button löscht den Text
         btnClear.setOnAction(e -> debugTextArea.clear());
     }
 
@@ -21,6 +20,6 @@ public class DebugViewController {
      * Nachrichten in dieses Debug-Fenster schreiben.
      */
     public void handleIncomingData(String line) {
-        debugTextArea.appendText(line.substring(2));
+        debugTextArea.appendText(line + "\n");
     }
 }

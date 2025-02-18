@@ -16,16 +16,13 @@ public class AlarmclockViewController {
     @FXML private Label alarmLabel;
     @FXML private Label beepLabel;
 
-    // Reines Model (kein ViewModel mehr)
-    private AlarmclockModel model = new AlarmclockModel();
+    private final AlarmclockModel model = new AlarmclockModel();
 
     @FXML
     public void initialize() {
-        // Beim Initialisieren wird die Ansicht gesetzt
         updateView();
     }
 
-    // Wird vom MainController (z. B. via serielle Daten) aufgerufen:
     public void setHexString(String hex) {
         model.setHexString(hex);
         updateView();
@@ -51,6 +48,5 @@ public class AlarmclockViewController {
     }
 
     public void setMainController(MainController mainController) {
-        // Optional: Referenz auf den MainController, falls benötigt
     }
 }

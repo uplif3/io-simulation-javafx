@@ -19,7 +19,6 @@ public class SeesawGraphCanvas extends Canvas {
 
     public SeesawGraphCanvas() {
         super(600, 150);
-        // Initial mit NaN füllen
         for (int i = 0; i < GRAPH_MAX_POINTS; i++) {
             referenceGraph[i] = Double.NaN;
             ballGraph[i] = Double.NaN;
@@ -36,7 +35,6 @@ public class SeesawGraphCanvas extends Canvas {
      * @param angle     aktueller Winkel (ca. -15 bis +15 Grad)
      */
     public void updateGraphData(double reference, double ball, double angle) {
-        // Skalierung analog zum C#-Code:
         double referenceScaled = (reference / 0.6) * (GRAPH_HEIGHT / 2.0);
         double ballScaled = (ball / 0.6) * (GRAPH_HEIGHT / 2.0);
         double angleScaled = (angle / 15.0) * (GRAPH_HEIGHT / 2.0);
@@ -61,7 +59,7 @@ public class SeesawGraphCanvas extends Canvas {
         // Canvas leeren
         gc.clearRect(0, 0, getWidth(), getHeight());
 
-        // Basis-Position (ähnlich wie im C#-Code)
+        // Basis-Position
         double baseX = 10;
         double baseY = 10;
 

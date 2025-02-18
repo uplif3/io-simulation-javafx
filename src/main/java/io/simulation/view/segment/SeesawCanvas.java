@@ -72,7 +72,7 @@ public class SeesawCanvas extends Canvas {
         gc.setFill(colorRef);
         gc.fillPolygon(new double[]{m1x, m2x, m3x}, new double[]{m1y, m2y, m3y}, 3);
 
-        // Ramp-Line (Wippe)
+        // Wippe
         double angleDeg = model.getAngle();
         double angleRad = Math.toRadians(angleDeg);
         double tanAngle = Math.tan(angleRad);

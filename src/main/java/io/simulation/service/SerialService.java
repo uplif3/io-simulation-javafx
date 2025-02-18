@@ -19,16 +19,13 @@ public class SerialService {
      * @return true, wenn erfolgreich geöffnet
      */
     public boolean openPort(String portName, int baudRate) {
-        // Falls schon offen, erstmal schließen
         closePort();
 
-        // Port-Objekt holen
         serialPort = SerialPort.getCommPort(portName);
         serialPort.setBaudRate(baudRate);
 
         serialPort.setComPortTimeouts(SerialPort.TIMEOUT_READ_BLOCKING, 0, 0);
 
-        // Versuchen zu öffnen
         boolean ok = serialPort.openPort();
         if (ok) {
             System.out.println("SerialService: Port " + portName + " mit Baud " + baudRate + " geöffnet.");
@@ -60,19 +57,13 @@ public class SerialService {
                 while (running && (data = in.read()) != -1) {
                     char c = (char) data;
                     if (c == '\n' || c == '\r') {
-                        // komplette Zeile empfangen
                         String line = buffer.toString();
                         buffer.setLength(0);
 
                         if (!line.isEmpty()) {
-                            // An den Callback weiterleiten:
-                            // Da wir evtl. ins UI wollen, hier Platform.runLater
-                            // => Der Callback kann dann selbst entscheiden
-                            // ob er direkt UI updatet oder erst parse o.ä.
                             Platform.runLater(() -> dataCallback.accept(line));
                         }
                     } else {
-                        // Zeichen anhängen
                         buffer.append(c);
                     }
                 }

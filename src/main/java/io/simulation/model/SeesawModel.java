@@ -45,22 +45,18 @@ public class SeesawModel {
      * Insgesamt müssen also mindestens 15 Zeichen vorhanden sein.
      */
     public void updateFromPacket(String packet) {
-        if (packet == null || packet.length() < 15) return;
-        // Überspringe die ersten 2 Zeichen (z. B. "d2")
-        String data = packet.substring(2).trim();
-        if (data.length() < 13) return; // 4+4+4+1 = 13 Zeichen
+        if (packet == null || packet.length() < 13) return;
 
         try {
-            int rawReference = parseSignedHex(data.substring(0, 4));
-            int rawBall = parseSignedHex(data.substring(4, 8));
-            int rawAngle = parseSignedHex(data.substring(8, 12));
+            int rawReference = parseSignedHex(packet.substring(0, 4));
+            int rawBall = parseSignedHex(packet.substring(4, 8));
+            int rawAngle = parseSignedHex(packet.substring(8, 12));
 
             this.reference = rawReference / 50000.0;
             this.ball = rawBall / 50000.0;
             this.angle = rawAngle / 2000.0;
-            this.boing = (data.charAt(12) == 't');
+            this.boing = (packet.charAt(12) == 't');
         } catch (NumberFormatException e) {
-            // Fehler beim Parsen – evtl. Logausgabe
             e.printStackTrace();
         }
     }

@@ -27,28 +27,18 @@ public class IOViewController {
     private IOModel ioModel;
     private MainController mainController;
 
-    /**
-     * Wird direkt nach dem Laden von FXML aufgerufen.
-     */
     @FXML
     public void initialize() {
-        // Falls du das Model direkt hier anlegen willst:
         this.ioModel = new IOModel();
 
-        // LEDs initialisieren
         for (int i = 7; i >= 0; i--) {
             ledArray[i] = new LEDCanvas(10);
             ledContainer.getChildren().add(ledArray[i]);
 
-            // Property-Bindung der LEDs an das Modell
             int finalI = i;
             ioModel.ledProperty(i).addListener((obs, oldVal, newVal) -> ledArray[finalI].setOn(newVal));
         }
 
-
-        // setDisable(true) kannst du optional im FXML oder hier per code machen.
-
-        // Beispiel: Switch-Bindung + Listener
         switch0.selectedProperty().bindBidirectional(ioModel.switchProperty(0));
         switch0.selectedProperty().addListener((obs, ov, nv) -> sendSwitches());
         switch1.selectedProperty().bindBidirectional(ioModel.switchProperty(1));
@@ -67,19 +57,16 @@ public class IOViewController {
         switch7.selectedProperty().addListener((obs, ov, nv) -> sendSwitches());
 
 
-        // Buttons => OnAction
         button0.setOnAction(e -> toggleButton(0));
         button1.setOnAction(e -> toggleButton(1));
         button2.setOnAction(e -> toggleButton(2));
         button3.setOnAction(e -> toggleButton(3));
 
-        // Scale0
         slider0.valueProperty().addListener((obs, ov, nv) -> {
             int newVal = nv.intValue();
             ioModel.setScale0(newVal);
             sendScale0();
         });
-        // Scale1
         slider1.valueProperty().addListener((obs, ov, nv) -> {
             int newVal = nv.intValue();
             ioModel.setScale1(newVal);
@@ -145,56 +132,51 @@ public class IOViewController {
         };
     }
 
-    /**
-     * Falls du einen MainController oder ScreenManager brauchst, kannst du ihn
-     * nach dem FXML-Load „injecten“:
-     */
+
     public void setMainController(MainController mainController) {
         this.mainController = mainController;
     }
 
-    // Hilfsmethoden, um an den Serial-Port zu schreiben:
 
-    private void sendSwitches() {
-        // Schicke "d01" + hex
+    public void sendSwitches() {
         if (mainController != null) {
             mainController.SerialWriteLine("d01" + ioModel.getSwitchesAsHex());
         }
     }
 
-    private void toggleButton(int index) {
+    public void toggleButton(int index) {
         ioModel.setButton(index, !ioModel.getButton(index));
         if (mainController != null) {
             mainController.SerialWriteLine("d02" + ioModel.getButtonsAsHex());
         }
     }
 
-    private void sendScale0() {
+    public void sendButtonState() {
+        if (mainController != null) {
+            mainController.SerialWriteLine("d02" + ioModel.getButtonsAsHex());
+        }
+    }
+
+    public void sendScale0() {
         if (mainController != null) {
             mainController.SerialWriteLine("d0a" + ioModel.getScale0AsHex());
         }
     }
 
-    private void sendScale1() {
+    public void sendScale1() {
         if (mainController != null) {
             mainController.SerialWriteLine("d0b" + ioModel.getScale1AsHex());
         }
     }
 
-    // -------------------------------------------------------------------------------------------
-    // Wenn du weiterhin "handleIncomingData" für diesen Screen brauchst, kannst du einfach
-    // eine öffentliche Methode definieren (analog zum alten Interface):
-    // -------------------------------------------------------------------------------------------
-    public void handleIncomingData(String line) {
-        // z.B. "d2abc1234" => substring(2)
-        String payload = line.substring(2);
-        System.out.println("IOViewController empfängt: " + payload);
 
-        ioModel.setLedsFromHex(payload);
-        // etc.
+
+
+    public void handleIncomingData(String line) {
+        System.out.println("IOViewController empfängt: " + line);
+        ioModel.setLedsFromHex(line);
     }
 
-    // Getter, falls von außen jemand das IOModel braucht:
     public IOModel getIoModel() {
         return ioModel;
     }

@@ -6,15 +6,11 @@
           xmlns="http://javafx.com/javafx"
           fx:controller="io.simulation.controller.IOViewController"
           hgap="5" vgap="5"
-          style="-fx-padding: 10;"> <!-- optional: etwas Padding -->
+          style="-fx-padding: 10;">
 
-    <!-- LEDs -->
     <Label text="LEDs:" GridPane.rowIndex="0" GridPane.columnIndex="0"/>
     <HBox fx:id="ledContainer" spacing="5" GridPane.rowIndex="0" GridPane.columnIndex="1"/>
 
-
-
-    <!-- Switches -->
     <Label text="Switches:" GridPane.rowIndex="1" GridPane.columnIndex="0"/>
     <HBox spacing="5" GridPane.rowIndex="1" GridPane.columnIndex="1">
         <children>
@@ -29,7 +25,6 @@
         </children>
     </HBox>
 
-    <!-- Buttons -->
     <Label text="Buttons:" GridPane.rowIndex="2" GridPane.columnIndex="0"/>
     <HBox spacing="5" GridPane.rowIndex="2" GridPane.columnIndex="1">
         <children>
@@ -40,14 +35,12 @@
         </children>
     </HBox>
 
-    <!-- Scale0 -->
     <Label text="Scale0:" GridPane.rowIndex="3" GridPane.columnIndex="0"/>
     <Slider fx:id="slider0"
             GridPane.rowIndex="3" GridPane.columnIndex="1"
             min="0" max="1023" value="0" showTickMarks="true"
             showTickLabels="true" majorTickUnit="256"/>
 
-    <!-- Scale1 -->
     <Label text="Scale1:" GridPane.rowIndex="4" GridPane.columnIndex="0"/>
     <Slider fx:id="slider1"
             GridPane.rowIndex="4" GridPane.columnIndex="1"

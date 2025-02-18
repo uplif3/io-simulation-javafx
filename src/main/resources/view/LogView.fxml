@@ -9,11 +9,9 @@
             fx:controller="io.simulation.controller.LogViewController"
             prefHeight="400.0" prefWidth="600.0">
     <center>
-        <!-- TextArea für das Log -->
         <TextArea fx:id="logTextArea" wrapText="true" />
     </center>
     <bottom>
-        <!-- HBox mit Buttons -->
         <HBox spacing="10" alignment="CENTER_LEFT">
             <children>
                 <Button fx:id="btnSync" text="Unsync" />

@@ -9,7 +9,6 @@ public class IOModel {
     public static final int NUM_SWITCHES = 8;
     public static final int NUM_BUTTONS = 4;
 
-    // Arrays für die LEDs, Switches und Buttons
     private BooleanProperty[] leds = new BooleanProperty[NUM_LEDS];
     private BooleanProperty[] switches = new BooleanProperty[NUM_SWITCHES];
     private BooleanProperty[] buttons = new BooleanProperty[NUM_BUTTONS];
@@ -29,7 +28,6 @@ public class IOModel {
         }
     }
 
-    // Getter/Setter und Property-Zugriff für LEDs
     public BooleanProperty ledProperty(int index) {
         return leds[index];
     }
@@ -42,7 +40,6 @@ public class IOModel {
         leds[index].set(value);
     }
 
-    // Analog für Switches
     public BooleanProperty switchProperty(int index) {
         return switches[index];
     }
@@ -55,7 +52,6 @@ public class IOModel {
         switches[index].set(value);
     }
 
-    // Und für Buttons
     public BooleanProperty buttonProperty(int index) {
         return buttons[index];
     }
@@ -68,7 +64,6 @@ public class IOModel {
         buttons[index].set(value);
     }
 
-    // Methoden, um den Zustand aus einem Hex-String zu setzen:
     public void setLedsFromHex(String hexVal) {
         int val = Integer.parseInt(hexVal, 16);
         for (int i = 0; i < NUM_LEDS; i++) {
@@ -91,7 +86,6 @@ public class IOModel {
         }
     }
 
-    // Methoden, um den Zustand in einen Hex-String umzuwandeln:
     public String getButtonsAsHex() {
         int val = 0;
         for (int i = 0; i < NUM_BUTTONS; i++) {
@@ -124,14 +118,12 @@ public class IOModel {
         return String.format("%04x", scale1);
     }
 
-    // Getter/Setter für Scale-Werte
     public int getScale0() {
         return scale0;
     }
 
     public void setScale0(int scale0) {
         this.scale0 = scale0;
-        // Hier könntest du auch einen PropertyChangeListener benachrichtigen, falls nötig.
     }
 
     public int getScale1() {
