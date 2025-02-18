@@ -1,24 +1,29 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0"
-         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project
+        xmlns="http://maven.apache.org/POM/4.0.0"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://maven.apache.org/POM/4.0.0
+                            http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>io.simulation</groupId>
     <artifactId>io-simulation-javafx</artifactId>
     <version>1.0-SNAPSHOT</version>
+    <packaging>jar</packaging>
 
     <properties>
         <maven.compiler.source>17</maven.compiler.source>
         <maven.compiler.target>17</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <!-- Versionen der Bibliotheken -->
-        <javafx.version>20</javafx.version>
+
+        <javafx.version>21</javafx.version>
         <jserialcomm.version>2.9.3</jserialcomm.version>
+
+        <module.name>io.simulation</module.name>
+        <main.class>io.simulation.Main</main.class>
     </properties>
 
     <dependencies>
-        <!-- JavaFX Abhängigkeiten -->
         <dependency>
             <groupId>org.openjfx</groupId>
             <artifactId>javafx-controls</artifactId>
@@ -29,8 +34,6 @@
             <artifactId>javafx-fxml</artifactId>
             <version>${javafx.version}</version>
         </dependency>
-
-        <!-- Bibliothek für serielle Kommunikation (jSerialComm) -->
         <dependency>
             <groupId>com.fazecast</groupId>
             <artifactId>jSerialComm</artifactId>
@@ -40,26 +43,78 @@
 
     <build>
         <plugins>
-            <!-- Maven Compiler Plugin -->
             <plugin>
                 <artifactId>maven-compiler-plugin</artifactId>
                 <version>3.8.1</version>
                 <configuration>
                     <source>${maven.compiler.source}</source>
                     <target>${maven.compiler.target}</target>
+                    <release>${maven.compiler.source}</release>
                 </configuration>
             </plugin>
 
-            <!-- JavaFX Maven Plugin zum einfachen Ausführen der Anwendung -->
             <plugin>
                 <groupId>org.openjfx</groupId>
                 <artifactId>javafx-maven-plugin</artifactId>
                 <version>0.0.8</version>
                 <configuration>
-                    <!-- Passe den Main-Class Pfad an deine Hauptklasse an -->
-                    <mainClass>io.simulation.Main</mainClass>
+                    <stripDebug>true</stripDebug>
+                    <compress>2</compress>
+                    <noHeaderFiles>true</noHeaderFiles>
+                    <noManPages>true</noManPages>
+                    <launcher>io-simulation-javafx</launcher>
+                    <jlinkImageName>io-simulation-javafx</jlinkImageName>
+                    <jlinkZipName>io-simulation-javafx</jlinkZipName>
+                    <mainClass>io.simulation.Main
+                    </mainClass>
                 </configuration>
             </plugin>
+
         </plugins>
     </build>
+
+    <profiles>
+        <profile>
+            <id>windows</id>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
+            <dependencies>
+                <dependency>
+                    <groupId>org.openjfx</groupId>
+                    <artifactId>javafx-graphics</artifactId>
+                    <version>${javafx.version}</version>
+                    <classifier>win</classifier>
+                </dependency>
+            </dependencies>
+        </profile>
+        <profile>
+            <id>linux</id>
+            <activation>
+                <activeByDefault>false</activeByDefault>
+            </activation>
+            <dependencies>
+                <dependency>
+                    <groupId>org.openjfx</groupId>
+                    <artifactId>javafx-graphics</artifactId>
+                    <version>${javafx.version}</version>
+                    <classifier>linux</classifier>
+                </dependency>
+            </dependencies>
+        </profile>
+        <profile>
+            <id>mac</id>
+            <activation>
+                <activeByDefault>false</activeByDefault>
+            </activation>
+            <dependencies>
+                <dependency>
+                    <groupId>org.openjfx</groupId>
+                    <artifactId>javafx-graphics</artifactId>
+                    <version>${javafx.version}</version>
+                    <classifier>mac</classifier>
+                </dependency>
+            </dependencies>
+        </profile>
+    </profiles>
 </project>
