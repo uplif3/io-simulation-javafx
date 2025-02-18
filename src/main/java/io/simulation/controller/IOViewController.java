@@ -1,19 +1,22 @@
 package io.simulation.controller;
 
-import io.simulation.controller.MainController;
 import io.simulation.model.IOModel;
+import io.simulation.view.segment.LEDCanvas;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.Slider;
+import javafx.scene.layout.HBox;
 
 public class IOViewController {
 
     // Hier bindest du alle FXML-Elemente per fx:id an
-    @FXML private CheckBox led0, led1, led2, led3, led4, led5, led6, led7;   // ... bis led7
+    @FXML private HBox ledContainer;
     @FXML private CheckBox switch0, switch1, switch2, switch3, switch4, switch5, switch6, switch7; // ... bis switch7
     @FXML private Button button0, button1, button2, button3;    // ... bis button3
     @FXML private Slider slider0, slider1;
+
+    private final LEDCanvas[] ledArray = new LEDCanvas[8];
 
     private IOModel ioModel;
     private MainController mainController;
@@ -26,15 +29,15 @@ public class IOViewController {
         // Falls du das Model direkt hier anlegen willst:
         this.ioModel = new IOModel();
 
-        // Beispiel: LED-Bindung
-        led0.selectedProperty().bindBidirectional(ioModel.ledProperty(0));
-        led1.selectedProperty().bindBidirectional(ioModel.ledProperty(1));
-        led2.selectedProperty().bindBidirectional(ioModel.ledProperty(2));
-        led3.selectedProperty().bindBidirectional(ioModel.ledProperty(3));
-        led4.selectedProperty().bindBidirectional(ioModel.ledProperty(4));
-        led5.selectedProperty().bindBidirectional(ioModel.ledProperty(5));
-        led6.selectedProperty().bindBidirectional(ioModel.ledProperty(6));
-        led7.selectedProperty().bindBidirectional(ioModel.ledProperty(7));
+        // LEDs initialisieren
+        for (int i = 7; i >= 0; i--) {
+            ledArray[i] = new LEDCanvas(10);
+            ledContainer.getChildren().add(ledArray[i]);
+
+            // Property-Bindung der LEDs an das Modell
+            int finalI = i;
+            ioModel.ledProperty(i).addListener((obs, oldVal, newVal) -> ledArray[finalI].setOn(newVal));
+        }
 
 
         // setDisable(true) kannst du optional im FXML oder hier per code machen.

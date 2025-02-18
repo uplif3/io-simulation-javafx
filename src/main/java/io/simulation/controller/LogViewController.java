@@ -51,6 +51,6 @@ public class LogViewController {
      * @param line die empfangene Zeile
      */
     public void handleIncomingData(String line) {
-        handleLog(line);
+        handleLog(line.substring(2));
     }
 }

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
+
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
-
 <GridPane xmlns:fx="http://javafx.com/fxml"
           xmlns="http://javafx.com/javafx"
           fx:controller="io.simulation.controller.IOViewController"
@@ -10,32 +10,22 @@
 
     <!-- LEDs -->
     <Label text="LEDs:" GridPane.rowIndex="0" GridPane.columnIndex="0"/>
-    <!-- HBox für die 8 LED-Checkboxen -->
-    <HBox spacing="5" GridPane.rowIndex="0" GridPane.columnIndex="1">
-        <children>
-            <CheckBox fx:id="led0" text="LED 0"/>
-            <CheckBox fx:id="led1" text="LED 1"/>
-            <CheckBox fx:id="led2" text="LED 2"/>
-            <CheckBox fx:id="led3" text="LED 3"/>
-            <CheckBox fx:id="led4" text="LED 4"/>
-            <CheckBox fx:id="led5" text="LED 5"/>
-            <CheckBox fx:id="led6" text="LED 6"/>
-            <CheckBox fx:id="led7" text="LED 7"/>
-        </children>
-    </HBox>
+    <HBox fx:id="ledContainer" spacing="5" GridPane.rowIndex="0" GridPane.columnIndex="1"/>
+
+
 
     <!-- Switches -->
     <Label text="Switches:" GridPane.rowIndex="1" GridPane.columnIndex="0"/>
     <HBox spacing="5" GridPane.rowIndex="1" GridPane.columnIndex="1">
         <children>
-            <CheckBox fx:id="switch0" text="SW 0"/>
-            <CheckBox fx:id="switch1" text="SW 1"/>
-            <CheckBox fx:id="switch2" text="SW 2"/>
-            <CheckBox fx:id="switch3" text="SW 3"/>
-            <CheckBox fx:id="switch4" text="SW 4"/>
-            <CheckBox fx:id="switch5" text="SW 5"/>
-            <CheckBox fx:id="switch6" text="SW 6"/>
             <CheckBox fx:id="switch7" text="SW 7"/>
+            <CheckBox fx:id="switch6" text="SW 6"/>
+            <CheckBox fx:id="switch5" text="SW 5"/>
+            <CheckBox fx:id="switch4" text="SW 4"/>
+            <CheckBox fx:id="switch3" text="SW 3"/>
+            <CheckBox fx:id="switch2" text="SW 2"/>
+            <CheckBox fx:id="switch1" text="SW 1"/>
+            <CheckBox fx:id="switch0" text="SW 0"/>
         </children>
     </HBox>
 
@@ -43,10 +33,10 @@
     <Label text="Buttons:" GridPane.rowIndex="2" GridPane.columnIndex="0"/>
     <HBox spacing="5" GridPane.rowIndex="2" GridPane.columnIndex="1">
         <children>
-            <Button fx:id="button0" text="BTN 0"/>
-            <Button fx:id="button1" text="BTN 1"/>
-            <Button fx:id="button2" text="BTN 2"/>
             <Button fx:id="button3" text="BTN 3"/>
+            <Button fx:id="button2" text="BTN 2"/>
+            <Button fx:id="button1" text="BTN 1"/>
+            <Button fx:id="button0" text="BTN 0"/>
         </children>
     </HBox>
 

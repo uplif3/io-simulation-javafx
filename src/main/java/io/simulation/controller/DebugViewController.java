@@ -21,6 +21,6 @@ public class DebugViewController {
      * Nachrichten in dieses Debug-Fenster schreiben.
      */
     public void handleIncomingData(String line) {
-        debugTextArea.appendText(line + "\n");
+        debugTextArea.appendText(line.substring(2));
     }
 }
